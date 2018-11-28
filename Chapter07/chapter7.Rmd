@@ -1,0 +1,221 @@
+---
+title: "Geostatistics"
+author: "Shammunul Islam"
+date: "July 10, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In Geostatistics, observed variables are random with the assumption that we observe them as outcome of random process(es). Usually, the data are observed in discrete locations of a spatially continuous region and we are interested in prediction of value in non-obbserved locations in this region.  For example, soil salinity is measured in certain points in an area and we are intersted in predicting or interpolating soil salinity in every point onder this area. Now, soil salinity in a point could depend on multiple reasons, it could due to its proximity to othe saline afected area or its spatial autocorrelation and also due to climate, a random process. Other examples of geostatistical data are rainfall data from stations, air quality, measurement of chemical component at multiple locations in an area etc.
+
+### Some important concepts
+
+Covariance is a measure of dispersion, an analogous measure for geostatistical data is covariogram which is the same as covariance with only the difference is that now observations are spatially indexed and we measure covariance between points at a fixed separation distance. Like correlation, we have correlogram for spatial data where again observations are spatially indexed and we take correlation between pairs of points at a given separation distance.Now, if we plot correlogram for all possible separation distance, or lag, we get a correlogram plot.
+
+We need second order stationarity for explaining local variation using covariogram. Second order stationarity conditions stipulate that the expected value of the variable is independent of point and the covaroigram for any distance is independent of point.
+
+We will work with meuse dataset from sp package. There are many variables, but we will work 
+
+```{r}
+library(sp)
+data(meuse)
+coordinates(meuse) = c("x", "y")
+head(meuse@data)
+```
+
+We will only work with zinc data or column and so now we subset this data from meuse dataset.
+
+```{r}
+meuse_coord = meuse@coords
+zinc = meuse@data[, 4]
+# cbind this two
+meuse_zinc = cbind(meuse_coord, zinc)
+head(meuse_zinc)
+```
+
+Let's plot this
+
+```{r}
+spplot(meuse, "zinc")
+```
+
+Many values of this zinc colum is concentrated in the lower range and if we use do.log=TRUE, these values pop up in the plot:
+
+```{r}
+spplot(meuse, "zinc", do.log=TRUE)
+```
+
+We will use gstat and geoR package for demonstrating how to perform different geostatistical analyses.
+
+Now, we will convert meuse_zinc dataframe to a class of geodata defined in geoR package using as.geodata() function. 
+
+```{r}
+meuse_zinc = as.geodata(meuse_zinc)
+class(meuse_zinc)
+```
+
+We see that the type of data is now geodata. Now, we can apply various functions in geoR package. We will in fact use both meuse spatialPolygonsDataFrame to be used with gstat package and meuse_zinc dataset to be used with geoR packages.
+
+Let's also plot these points depending on which quantiles they belong to indicated by size and color using points.geodata() as following:
+
+```{r}
+points.geodata(meuse_zinc, xlab="X", ylab="Y", pt.divide="quintile")
+```
+
+Semivariance is the squared difference between two points divided by 2. Variogram cloud plots all the squared difference of all pairs of points as a function of separation distance. Variogram is the expected squared difference of all pairs of points for a separation distance. We now plot the variogram cloud and variogram using geoR package and the function variog(). 
+
+```{r}
+#Set the chart to one row, two columns 
+par(mfrow=c(1,2))
+# Variogram cloud
+plot(variog(meuse_zinc,option="cloud"),main="Variogram Cloud")
+#Variogram 
+plot(variog(meuse_zinc),main="Binned Variogram")
+# draw a line
+lines(variog(meuse_zinc))
+# set the default chart setting to 1 row, 1 column
+par(mfrow=c(1,1))
+```
+
+Now, we will use gstat package for plotting variogram.
+
+```{r}
+library(gstat)
+plot(variogram(zinc ~ 1, meuse))
+```
+
+We see that, in this case, the distance considered here is up to 1500+ unless the variog() from geoR package. Let's have a look at the summary of this dataset.
+
+```{r}
+summary(meuse_zinc)
+```
+
+We see that the minimum distance is 43.93 and the maximum distance is 444.76. Now, we will plot between 40 and 1600 in the following way:
+
+```{r}
+# Variogram
+model = variog(meuse_zinc,uvec=seq(40,1600,l=15),bin.cloud=T)
+plot(model,main="Variogram Cloud", bin.cloud=T)
+```
+
+Nugget is the value of the semivariance at starting location which reflects the measurement error. Sill is when the semivariogram reaches its maximum height. Range is the distance beyond which the variogram value doesn't change much. Partial sill is defined as the difference between sill and nugget.
+
+There are different variogram models including pure nugget effects, linear model, spherical model, Gaussian model, parabolic model etc. Depending on the plot of variogram, we can decide which model to fit. 
+
+Now, let's use variofit() function of geoR package to automatically fit a line to it.
+
+```{r}
+model = variog(meuse_zinc)
+model_fit = variofit(model)
+model_fit
+```
+
+Here sigmasq is the sill value and we can see that the value of this is 131205.241.
+
+Using vgm() from gstat package, we can also also model variogram. A list of the models that we can fit to the sample variogram can be listed as follows:
+
+```{r}
+vgm()
+```
+
+
+Now, we will fit variogram parameters of a spherical model to the sample variogram.
+
+```{r}
+model2 = variogram(zinc~1, meuse)
+fit.variogram(model2, vgm("Sph"))
+```
+
+vgm() can also take a set of models and then it can return the best model as following:
+
+```{r}
+model2.fit = fit.variogram(model2, vgm(c("Mat", "Exp", "Gau", "Sph")))
+model2.fit
+```
+
+We can see that it return the Mat model as best fit.
+
+### Kriging
+
+Kriging is an interpolation process in which interpolated values are due to a Gaussian process. In Krigin, variogram is used for interpolating geostatistical data. Kriging gives us the best linear unbiased prediction. 
+
+With the use of observed datand variogram, Kriging computes estimates and uncertainties at unobserved points. There are different types of Kriging, we will discuss some of them in avery brief way now. Ordinary Kriging assumes that the mean is constant. Simple Kriging assumes that the generalized least squares estimate of the trend coefficients is known. Univesal Kriging has a local trend component.
+
+Now, we will use some of these Kriging methods below.We will use meuse.grid dataset now which contains coordinates of points on a regular grid. We convert it into SpatialPixelsDataFrame.
+
+```{r}
+data(meuse.grid)
+coordinates(meuse.grid) = c("x", "y")
+meuse.grid = as(meuse.grid, "SpatialPixelsDataFrame")
+```
+
+Now, we fit a simple Kriging as follows:
+
+```{r}
+krig_simple = krige(zinc ~ 1, meuse, meuse.grid, model2.fit, beta = 10)
+```
+
+Let's have a look at the names of different contents of krig_sample.
+
+```{r}
+names(krig_simple)
+```
+
+Let's have a look at the predicted values contained in var1.pred.
+
+```{r}
+spplot(krig_simple, "var1.pred")
+```
+
+Now, we can also compute exceedance probability, for example, we can compute the probability of value of zinc above 1200.
+
+```{r}
+krig_simple$exceedanceProb = 1 - pnorm(1200, mean = krig_simple$var1.pred, sd = sqrt(krig_simple$var1.var))
+```
+Now, plot the exceedance probability as following:
+
+```{r}
+spplot(krig_simple, zcol = "exceedanceProb")
+```
+
+Looks like for most of the area, the exceedance probability is very low.
+
+### Checking residuals 
+
+We can check how well our Kriging model is doing in modeling the data and in predicting. We can use cross-validation which dividess data in 2 parts, training and validation, where we fit variogram model to training part and kriging on the validation set. We then compare prediction on validation set with the measured value on this set.
+
+Now, we create training data with 70% of the meuse data and validation data with the remaining 30% data.
+
+```{r}
+no_rows = dim(meuse@data)[1]
+sample_size = floor(0.75 * no_rows)
+train_no = sample(seq_len(no_rows), size = sample_size)
+train = meuse[train_no, ]
+validation = meuse[-train_no, ]
+```
+
+Now, fit a variogram to training data.
+
+```{r}
+# In vgm, first argument is partial sill, second is model, third is range
+train_fit = fit.variogram(variogram(zinc~1, train), vgm(134746.5, "Mat", 1200, 1))
+```
+
+Now, get kriging prediction on validation set as follows:
+
+```{r}
+validation_pred = krige(zinc ~ 1, train, validation, train_fit)
+```
+
+Now, we will estimate the R2 as following:
+
+```{r}
+kriging_residual = validation$zinc - validation_pred$var1.pred
+mean_residual = validation$zinc - mean(validation$zinc)
+# R2 computation
+1 - sum(kriging_residual^2)/sum(mean_residual^2)
+```
+
