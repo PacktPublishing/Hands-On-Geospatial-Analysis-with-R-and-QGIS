@@ -1,0 +1,18 @@
+<PAMDataset>
+  <Metadata domain="IMAGERY">
+    <MDI key="ACQUISITIONDATETIME">1970-01-01 06:00:00</MDI>
+    <MDI key="CLOUDCOVER">18</MDI>
+    <MDI key="SATELLITEID">LANDSAT_8</MDI>
+  </Metadata>
+  <Metadata>
+    <MDI key="METADATATYPE">ODL</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">65535</MDI>
+      <MDI key="STATISTICS_MEAN">7740.3616334529</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_STDDEV">7075.2690115278</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

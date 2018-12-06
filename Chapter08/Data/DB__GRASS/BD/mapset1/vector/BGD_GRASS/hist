@@ -1,0 +1,8 @@
+COMMAND: v.in.ogr -o input="F:\Hands-on Geospatial Analysis Using R and QGIS\Chapter 2\Data\BGD_adm4.shp" output="BGD_GRASS" min_area=0.0001 type="" snap=-1
+GISDBASE: F:\Hands-on Geospatial Analysis Using R and QGIS\Chapter 8\Data\DB__GRASS
+LOCATION: BD MAPSET: mapset1 USER: ERI DATE: Sat Sep 22 02:53:42 2018
+-----------------------------------------------------
+901 input polygons
+Total area: 1.39647E+011 (902 areas)
+Overlapping area: 0 (0 areas)
+Area without category: 3763.95 (1 areas)
