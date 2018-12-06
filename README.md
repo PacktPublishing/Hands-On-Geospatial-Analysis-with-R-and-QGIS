@@ -1,7 +1,5 @@
 # Hands-On Geospatial Analysis with R and QGIS
 
-<a href="https:https://india.packtpub.com/in/application-development/hands-geospatial-analysis-r-and-qgis><img src="" alt="" height="256px" align="right"></a>
-
 This is the code repository for [Hands-On Geospatial Analysis with R and QGIS](packt UTM URL for the book), published by Packt.
 
 **A beginner’s guide to manipulating, managing, and analyzing spatial data using R and QGIS 3.2.2**
@@ -45,9 +43,9 @@ With the following software and hardware list you can run all code files present
 We also provide a PDF file that has color images of the screenshots/diagrams used in this book. [Click here to download it](https://www.packtpub.com/sites/default/files/downloads/9781788991674_ColorImages.pdf).
 
 ### Related products
-*  [[Packt]](https://india.packtpub.com/in/application-development/mastering-geospatial-analysis-python?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/1-788-99666-6)
+*  Mastering Geospatial Analysis with Python[[Packt]](https://india.packtpub.com/in/application-development/mastering-geospatial-analysis-python?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/1-788-99666-6)
 
-*  [[Packt]](https://www.packtpub.com/application-development/postgis-cookbook-second-edition?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/1-788-83583-2)
+*  PostGIS Cookbook - Second Edition[[Packt]](https://www.packtpub.com/application-development/postgis-cookbook-second-edition?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/1-788-83583-2)
 
 ## Get to Know the Author
 **Shammunul Islam**
