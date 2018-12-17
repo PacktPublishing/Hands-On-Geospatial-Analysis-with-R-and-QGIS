@@ -1,0 +1,56 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <GDALRasterAttributeTable>
+      <FieldDefn index="0">
+        <Name>min</Name>
+        <Type>1</Type>
+        <Usage>3</Usage>
+      </FieldDefn>
+      <FieldDefn index="1">
+        <Name>max</Name>
+        <Type>1</Type>
+        <Usage>4</Usage>
+      </FieldDefn>
+      <FieldDefn index="2">
+        <Name>redmin</Name>
+        <Type>0</Type>
+        <Usage>10</Usage>
+      </FieldDefn>
+      <FieldDefn index="3">
+        <Name>redmax</Name>
+        <Type>0</Type>
+        <Usage>14</Usage>
+      </FieldDefn>
+      <FieldDefn index="4">
+        <Name>greenmin</Name>
+        <Type>0</Type>
+        <Usage>11</Usage>
+      </FieldDefn>
+      <FieldDefn index="5">
+        <Name>greenmax</Name>
+        <Type>0</Type>
+        <Usage>15</Usage>
+      </FieldDefn>
+      <FieldDefn index="6">
+        <Name>bluemin</Name>
+        <Type>0</Type>
+        <Usage>12</Usage>
+      </FieldDefn>
+      <FieldDefn index="7">
+        <Name>bluemax</Name>
+        <Type>0</Type>
+        <Usage>16</Usage>
+      </FieldDefn>
+      <Row index="0">
+        <F>0</F>
+        <F>0</F>
+        <F>252</F>
+        <F>252</F>
+        <F>231</F>
+        <F>231</F>
+        <F>36</F>
+        <F>36</F>
+      </Row>
+    </GDALRasterAttributeTable>
+  </PAMRasterBand>
+</PAMDataset>
