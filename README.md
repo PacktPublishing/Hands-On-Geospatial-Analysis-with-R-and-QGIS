@@ -1,8 +1,3 @@
-## $5 Tech Unlocked 2021!
-[Buy and download this Book for only $5 on PacktPub.com](https://www.packtpub.com/product/hands-on-geospatial-analysis-with-r-and-qgis/9781788991674)
------
-*If you have read this book, please leave a review on [Amazon.com](https://www.amazon.com/gp/product/1788991672).     Potential readers can then use your unbiased opinion to help them make purchase decisions. Thank you. The $5 campaign         runs from __December 15th 2020__ to __January 13th 2021.__*
-
 # Hands-On Geospatial Analysis with R and QGIS
 
 This is the code repository for [Hands-On Geospatial Analysis with R and QGIS](packt UTM URL for the book), published by Packt.
